@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -28,11 +30,11 @@ import androidx.compose.ui.window.rememberWindowState
 fun App() {
     var set by remember { mutableStateOf(1) }
 
-    MaterialTheme {
+    MaterialTheme(typography = Typography(defaultFontFamily = FontFamily.SansSerif)) {
         Box (modifier = Modifier.fillMaxSize()
             .background(Color(0, 12, 55))) {
             header(Modifier.align(Alignment.TopCenter))
-
+            footer(Modifier.align(Alignment.BottomCenter))
         }
 
     }
