@@ -1,19 +1,22 @@
+package components
+
+import Newspaper
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun header(modifier: Modifier = Modifier) {
@@ -43,7 +46,9 @@ fun header(modifier: Modifier = Modifier) {
 
             TextButton(
                 onClick = { /* ação de navegação */ },
-                modifier = Styles.HEADER_BUTTON.style
+                modifier = Modifier
+                    .border(1.dp, Color.White, shape = RoundedCornerShape(10.dp))
+                    .background(Color(0, 0, 0, 0))
             ) {
 
                 Row {
@@ -58,7 +63,9 @@ fun header(modifier: Modifier = Modifier) {
             }
             TextButton(
                 onClick = { /* ação de navegação */ },
-                modifier = Styles.HEADER_BUTTON.style
+                modifier = Modifier
+                    .border(1.dp, Color.White, shape = RoundedCornerShape(10.dp))
+                    .background(Color(0, 0, 0, 0))
             ) {
                 Row {
                     Image(
@@ -72,7 +79,9 @@ fun header(modifier: Modifier = Modifier) {
             }
             TextButton(
                 onClick = { /* ação de navegação */ },
-                modifier = Styles.HEADER_BUTTON.style
+                modifier = Modifier
+                    .border(1.dp, Color.White, shape = RoundedCornerShape(10.dp))
+                    .background(Color(0, 0, 0, 0))
             ) {
                 Row {
                     Image(
@@ -104,16 +113,50 @@ fun footer(modifier: Modifier = Modifier) {
         .background(Color(18, 28, 94, 247))
         .border(3.dp, Color(89, 222, 212, 247), shape = RoundedCornerShape(10.dp))
         .padding(10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Box(Modifier.align(Alignment.CenterVertically)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             FloatingActionButton(
+                modifier = Modifier.size(45.dp),
                 onClick = { /* ação de navegação */ },
             ) {
                 Icon(Newspaper, "Floating action button.")
             }
-            Text("Logs")
+            Text("Logs Minecraft", color = Color.White,fontSize = 13.sp)
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            FloatingActionButton(
+                modifier = Modifier.size(55.dp),
+                backgroundColor = Color(0,200,0,255),
+                onClick = { /* ação de navegação */ },
+            ) {
+                Image(
+                    painter = painterResource("images/jogo.png"),
+                    contentDescription = "Minecraft Icon",
+                    modifier = Modifier.size(20.dp)
+                )            }
+            Text("Iniciar Minecraft", color = Color.White,fontSize = 14.sp)
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            FloatingActionButton(
+                modifier = Modifier.size(55.dp),
+                backgroundColor = Color(0,200,0,255),
+                onClick = { /* ação de navegação */ },
+            ) {
+                Icon(Icons.Default.PlayArrow, "Floating action button.", tint = Color.White)
+            }
+            Text("Iniciar Spigot", color = Color.White,fontSize = 14.sp)
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            FloatingActionButton(
+                modifier = Modifier.size(45.dp),
+                onClick = { /* ação de navegação */ },
+            ) {
+                Icon(Newspaper, "Floating action button.")
+            }
+            Text("Logs Servidor", color = Color.White,fontSize = 13.sp)
         }
 
 

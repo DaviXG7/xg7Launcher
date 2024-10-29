@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-public val Newspaper: ImageVector
+val Newspaper: ImageVector
     get() {
         if (_Newspaper != null) {
             return _Newspaper!!
