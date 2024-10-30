@@ -1,8 +1,9 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Typography
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,30 +17,46 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import components.MinecraftBootProfile
-import components.ServerBootProfile
-import components.footer
-import components.header
+import components.*
+
+enum class Screen {
+    MAIN, PROFILE
+}
 
 @Composable
 @Preview
 fun App() {
-    val navController = rememberNavController()
-    var set by remember { mutableStateOf(1) }
-
+    var currentPage by remember { mutableStateOf(Screen.MAIN) }
     MaterialTheme(typography = Typography(defaultFontFamily = FontFamily.SansSerif)) {
         Box (modifier = Modifier.fillMaxSize()
             .background(Color(0, 12, 55))) {
-            header(Modifier.align(Alignment.TopCenter))
-            Row (Modifier.align(Alignment.Center), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                NavHost(navController = navController, startDestination = "main") {
-                    composable("main") { MainScreen(navController) }
-                    composable("profile") { ProfileScreen(navController) }
-                }
-                MinecraftBootProfile(Modifier)
-                ServerBootProfile(Modifier)
+            header(Modifier.align(Alignment.TopCenter), onPageChange = { page -> currentPage = page })
+
+                when (currentPage) {
+                    Screen.MAIN -> {
+                        Row (Modifier.align(Alignment.Center), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                            MinecraftBootProfile(Modifier)
+                            ServerBootProfile(Modifier)
+                        }
+                    }
+
+                    Screen.PROFILE -> {
+                        Profiles(Modifier.align(Alignment.Center))
+                    }
             }
             footer(Modifier.align(Alignment.BottomCenter))
+            if (currentPage == Screen.PROFILE) {
+                FloatingActionButton(
+                    backgroundColor = Color.Green,
+                    onClick = { /* Ação do botão */ },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                        .offset((-40).dp, (-60).dp)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Adicionar perfil")
+                }
+            }
         }
 
     }

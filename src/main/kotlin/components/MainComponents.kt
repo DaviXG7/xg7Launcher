@@ -1,9 +1,11 @@
 package components
 
 import Newspaper
+import Screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun header(modifier: Modifier = Modifier) {
+fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {
 
     Row(
         modifier = modifier
@@ -34,7 +36,9 @@ fun header(modifier: Modifier = Modifier) {
 
         Image(
             painter = painterResource("images/logo.png"),
-            contentDescription = "Logo"
+            contentDescription = "Logo",
+            modifier = Modifier
+                .clickable { onPageChange(Screen.MAIN) }
         )
 
         Row(
@@ -45,7 +49,7 @@ fun header(modifier: Modifier = Modifier) {
         ) {
 
             TextButton(
-                onClick = { /* ação de navegação */ },
+                onClick = { onPageChange(Screen.PROFILE) },
                 modifier = Modifier
                     .border(1.dp, Color.White, shape = RoundedCornerShape(10.dp))
                     .background(Color(0, 0, 0, 0))
@@ -62,7 +66,7 @@ fun header(modifier: Modifier = Modifier) {
                 }
             }
             TextButton(
-                onClick = { /* ação de navegação */ },
+                onClick = { onPageChange(Screen.PROFILE) },
                 modifier = Modifier
                     .border(1.dp, Color.White, shape = RoundedCornerShape(10.dp))
                     .background(Color(0, 0, 0, 0))

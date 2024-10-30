@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import controlers.Profile
 import java.util.Arrays
 
 @Composable
@@ -188,6 +190,44 @@ fun SelectMenu(options: List<String>, selectedOption: Int, onOptionSelected: (St
                     Text(option)
                 }
             }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun Profiles(modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxHeight(0.63f)
+            .fillMaxWidth(0.75f)
+            .padding(16.dp)
+    ) {
+        FlowRow (
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(Color.LightGray)
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+
+                for (i in 0..10) {
+                    Box(
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(100.dp)
+                            .background(Color.Blue)
+                            .padding(8.dp)
+                    ) {
+                        Text(
+                            text = "item $i",
+                            color = Color.White,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
         }
     }
 }
