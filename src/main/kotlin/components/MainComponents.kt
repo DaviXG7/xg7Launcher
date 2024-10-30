@@ -49,7 +49,7 @@ fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {
         ) {
 
             TextButton(
-                onClick = { onPageChange(Screen.PROFILE) },
+                onClick = { onPageChange(Screen.PROFILE_MINECRAFT) },
                 modifier = Modifier
                     .border(1.dp, Color.White, shape = RoundedCornerShape(10.dp))
                     .background(Color(0, 0, 0, 0))
@@ -66,7 +66,7 @@ fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {
                 }
             }
             TextButton(
-                onClick = { onPageChange(Screen.PROFILE) },
+                onClick = { onPageChange(Screen.PROFILE_SPIGOT) },
                 modifier = Modifier
                     .border(1.dp, Color.White, shape = RoundedCornerShape(10.dp))
                     .background(Color(0, 0, 0, 0))
@@ -133,7 +133,7 @@ fun footer(modifier: Modifier = Modifier) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             FloatingActionButton(
                 modifier = Modifier.size(55.dp),
-                backgroundColor = Color(0,200,0,255),
+                backgroundColor = Color(0,224,13,255),
                 onClick = { /* ação de navegação */ },
             ) {
                 Image(
@@ -146,7 +146,7 @@ fun footer(modifier: Modifier = Modifier) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             FloatingActionButton(
                 modifier = Modifier.size(55.dp),
-                backgroundColor = Color(0,200,0,255),
+                backgroundColor = Color(0,224,13,255),
                 onClick = { /* ação de navegação */ },
             ) {
                 Icon(Icons.Default.PlayArrow, "Floating action button.", tint = Color.White)

@@ -18,9 +18,10 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import components.*
+import controlers.Profile
 
 enum class Screen {
-    MAIN, PROFILE
+    MAIN, PROFILE_MINECRAFT, PROFILE_SPIGOT
 }
 
 @Composable
@@ -40,12 +41,15 @@ fun App() {
                         }
                     }
 
-                    Screen.PROFILE -> {
-                        Profiles(Modifier.align(Alignment.Center))
+                    Screen.PROFILE_MINECRAFT -> {
+                        Profiles(Modifier.align(Alignment.Center), Profile.Type.MINECRAFT)
+                    }
+                    Screen.PROFILE_SPIGOT -> {
+                        Profiles(Modifier.align(Alignment.Center), Profile.Type.SPIGOT)
                     }
             }
             footer(Modifier.align(Alignment.BottomCenter))
-            if (currentPage == Screen.PROFILE) {
+            if (currentPage == Screen.PROFILE_MINECRAFT || currentPage == Screen.PROFILE_SPIGOT) {
                 FloatingActionButton(
                     backgroundColor = Color.Green,
                     onClick = { /* Ação do botão */ },

@@ -1,13 +1,15 @@
 package components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,6 +18,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import controlers.Profile
 import java.util.Arrays
 
@@ -197,37 +200,77 @@ fun SelectMenu(options: List<String>, selectedOption: Int, onOptionSelected: (St
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun Profiles(modifier: Modifier) {
+fun Profiles(modifier: Modifier, profileType: Profile.Type) {
+
+    val stateVertical = rememberScrollState()
+
     Box(
         modifier = modifier
             .fillMaxHeight(0.63f)
             .fillMaxWidth(0.75f)
             .padding(16.dp)
     ) {
-        FlowRow (
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .background(Color.LightGray)
-                .padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .fillMaxSize()
+                .padding(16.dp)
+                .border(1.dp, Color.White, RoundedCornerShape(10.dp))
+                .verticalScroll(stateVertical)
         ) {
-
-                for (i in 0..10) {
-                    Box(
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                for (i in 0..35) {
+                    Column(
                         modifier = Modifier
-                            .width(100.dp)
-                            .height(100.dp)
-                            .background(Color.Blue)
+                            .width(150.dp)
+                            .height(190.dp)
                             .padding(8.dp)
+                            .border(1.dp, Color(89, 222, 212, 247), shape = RoundedCornerShape(10.dp))
+                            .background(
+                                brush = Brush.linearGradient(
+                                    colors = listOf(Color(24, 71, 99, 247), Color(1, 8, 78, 247))
+                                )
+                            ),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceAround
                     ) {
-                        Text(
-                            text = "item $i",
-                            color = Color.White,
-                            modifier = Modifier.align(Alignment.Center)
+                        Image(
+                            painter = painterResource("images/caixa.png"),
+                            contentDescription = "Profile",
+                            Modifier.size(80.dp)
                         )
+                        Text(
+                            text = "$profileType item",
+                            color = Color.White,
+                            fontSize = 14.sp
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxSize(0.7f),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            FloatingActionButton(
+                                modifier = Modifier.size(45.dp),
+                                backgroundColor = Color(0,224,13,255),
+                                onClick = { /* ação de navegação */ },
+                            ) {
+                                Icon(Icons.Default.PlayArrow, "Floating action button.", tint = Color.White)
+                            }
+                            FloatingActionButton(
+                                modifier = Modifier.size(45.dp),
+                                backgroundColor = Color.LightGray,
+                                onClick = { /* ação de navegação */ },
+                            ) {
+                                Icon(Icons.Default.Add, "Floating action button.", tint = Color.Black)
+                            }
+                        }
                     }
                 }
+            }
         }
     }
+
 }
