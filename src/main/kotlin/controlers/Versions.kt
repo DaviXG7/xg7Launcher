@@ -1,21 +1,18 @@
 package controlers
 
-sealed class Versions {
+enum class Software {
+    PAPER,
+    SPIGOT,
+}
 
-    enum class Minecraft {
-        V1_21_1,
-        V1_20_6,
+enum class JavaVersion {
+    V8,
+    V11,
+    V17,
+    V21
+}
 
-    }
-    sealed class Server {
-        enum class Spigot {
-            V1_21_1,
-            V1_20_1
-        }
-        enum class Paper {
-            V1_21_1,
-            V1_20_1
-        }
-    }
-
+enum class Version {
+    V1_21_1,
+    V1_20_6,
 }

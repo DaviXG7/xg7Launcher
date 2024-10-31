@@ -28,7 +28,7 @@ fun SelectMenu(options: List<String>, selectedOption: Int, onOptionSelected: (St
     Box {
         // Botão para abrir o menu
         Button(onClick = { expanded = true }) {
-            Text(options[selectedOption])
+            Text(options[selectedText])
         }
 
         // DropdownMenu que mostra as opções
