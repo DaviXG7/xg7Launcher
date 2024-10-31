@@ -166,41 +166,11 @@ fun ServerBootProfile(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun SelectMenu(options: List<String>, selectedOption: Int, onOptionSelected: (String) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(selectedOption) }
-
-    Box {
-        // Botão para abrir o menu
-        Button(onClick = { expanded = true }) {
-            Text(options[selectedOption])
-        }
-
-        // DropdownMenu que mostra as opções
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedText = options.indexOf(option)
-                        onOptionSelected(option)
-                        expanded = false
-                    }
-                ) {
-                    Text(option)
-                }
-            }
-        }
-    }
-}
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun Profiles(modifier: Modifier, profileType: Profile.Type) {
+fun Profiles(modifier: Modifier) {
 
     val stateVertical = rememberScrollState()
 
@@ -244,7 +214,7 @@ fun Profiles(modifier: Modifier, profileType: Profile.Type) {
                             Modifier.size(80.dp)
                         )
                         Text(
-                            text = "$profileType item",
+                            text = "item",
                             color = Color.White,
                             fontSize = 14.sp
                         )

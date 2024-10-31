@@ -12,13 +12,44 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+@Composable
+fun SelectMenu(options: List<String>, selectedOption: Int, onOptionSelected: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(selectedOption) }
+
+    Box {
+        // Botão para abrir o menu
+        Button(onClick = { expanded = true }) {
+            Text(options[selectedOption])
+        }
+
+        // DropdownMenu que mostra as opções
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedText = options.indexOf(option)
+                        onOptionSelected(option)
+                        expanded = false
+                    }
+                ) {
+                    Text(option)
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {

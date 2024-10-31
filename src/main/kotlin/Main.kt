@@ -29,6 +29,9 @@ enum class Screen {
 @Preview
 fun App() {
     var currentPage by remember { mutableStateOf(Screen.MAIN) }
+    var showCreateWindow by remember { mutableStateOf(false) }
+
+
     MaterialTheme(typography = Typography(defaultFontFamily = FontFamily.SansSerif)) {
         Box (modifier = Modifier.fillMaxSize()
             .background(Color(0, 12, 55))) {
@@ -43,17 +46,17 @@ fun App() {
                     }
 
                     Screen.PROFILE_MINECRAFT -> {
-                        Profiles(Modifier.align(Alignment.Center), Profile.Type.MINECRAFT)
+                        Profiles(Modifier.align(Alignment.Center))
                     }
                     Screen.PROFILE_SPIGOT -> {
-                        Profiles(Modifier.align(Alignment.Center), Profile.Type.SPIGOT)
+                        Profiles(Modifier.align(Alignment.Center))
                     }
             }
             footer(Modifier.align(Alignment.BottomCenter))
             if (currentPage == Screen.PROFILE_MINECRAFT || currentPage == Screen.PROFILE_SPIGOT) {
                 FloatingActionButton(
                     backgroundColor = Color.Green,
-                    onClick = { /* Ação do botão */ },
+                    onClick = { showCreateWindow = true },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(16.dp)
@@ -63,9 +66,13 @@ fun App() {
                 }
             }
         }
-
     }
+    if (showCreateWindow) {
+        show(currentPage, onClose = { showCreateWindow = false })
+    }
+
 }
+
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication,
@@ -74,4 +81,5 @@ fun main() = application {
         ) {
         App()
     }
+
 }
