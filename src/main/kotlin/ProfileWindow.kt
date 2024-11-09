@@ -27,7 +27,7 @@ data class ProfileState(
 @Composable
 fun show(screen: Screen, onClose: () ->  Unit) {
 
-    val profileState by remember { mutableStateOf(ProfileState()) }
+    var profileState by remember { mutableStateOf(ProfileState()) }
 
     var test by remember { mutableStateOf("a") }
 
@@ -43,7 +43,7 @@ fun show(screen: Screen, onClose: () ->  Unit) {
                 .background(Color(0, 12, 55,210))) {
 
                 TextField(
-                    onValueChange = {profileState.name = it},
+                    onValueChange = {profileState = profileState.copy(name = it)},
                     value = profileState.name,
                     label = { Text("Nome:")},
 
