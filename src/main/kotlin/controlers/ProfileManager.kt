@@ -15,6 +15,8 @@ fun createProfile(type: Screen, name: String, image: String, pathFiles: String, 
 
 private fun createServerProfile(name: String, image: String, pathFiles: String, javaVersion: JavaVersion, software: Software): ServerProfile {
 
+    val profile = ServerProfile(name,image,"profiles/$name",software,javaVersion);
+
     return ServerProfile("","","",Software.SPIGOT,JavaVersion.V17);
 
 }

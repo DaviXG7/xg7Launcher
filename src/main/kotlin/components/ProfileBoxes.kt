@@ -39,7 +39,7 @@ fun MinecraftBootProfile(modifier: Modifier = Modifier) {
     ) {
 
         Image(
-            painter = painterResource("images/caixa.png"),
+            painter = painterResource("assets/images/caixa.png"),
             contentDescription = "Profile",
             Modifier.size(115.dp)
         )
@@ -101,7 +101,7 @@ fun ServerBootProfile(modifier: Modifier = Modifier) {
     ) {
 
         Image(
-            painter = painterResource("images/caixa.png"),
+            painter = painterResource("assets/images/caixa.png"),
             contentDescription = "Profile",
             Modifier.size(115.dp)
         )
@@ -205,7 +205,7 @@ fun Profiles(modifier: Modifier) {
                         verticalArrangement = Arrangement.SpaceAround
                     ) {
                         Image(
-                            painter = painterResource("images/caixa.png"),
+                            painter = painterResource("assets/images/caixa.png"),
                             contentDescription = "Profile",
                             Modifier.size(80.dp)
                         )

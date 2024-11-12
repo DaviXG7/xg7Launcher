@@ -1,0 +1,17 @@
+{
+  "1.21.1": "https://cdn.getbukkit.org/spigot/spigot-1.21.jar",
+  "1.20.1": "https://cdn.getbukkit.org/spigot/spigot-1.20.1.jar",
+  "1.19.4": "https://cdn.getbukkit.org/spigot/spigot-1.19.4.jar",
+  "1.18.2": "https://cdn.getbukkit.org/spigot/spigot-1.18.2.jar",
+  "1.17.1": "https://cdn.getbukkit.org/spigot/spigot-1.17.1.jar",
+  "1.16.5": "https://cdn.getbukkit.org/spigot/spigot-1.16.5.jar",
+  "1.15.2": "https://cdn.getbukkit.org/spigot/spigot-1.15.2.jar",
+  "1.14.4": "https://cdn.getbukkit.org/spigot/spigot-1.14.4.jar",
+  "1.13.2": "https://cdn.getbukkit.orgspigot/spigot-1.13.2.jar",
+  "1.12.2": "https://cdn.getbukkit.org/spigot/spigot-1.12.2.jar",
+  "1.11.2": "https://cdn.getbukkit.org/spigot/spigot-1.11.2.jar",
+  "1.9.4": "https://cdn.getbukkit.org/spigot/spigot-1.9.4-R0.1-SNAPSHOT-latest.jar",
+  "1.8.8": "https://cdn.getbukkit.org/spigot/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar",
+  "1.7.10": "https://cdn.getbukkit.org/spigot/spigot-1.7.10-SNAPSHOT-b1657.jar"
+
+}

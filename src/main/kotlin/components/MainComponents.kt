@@ -66,7 +66,7 @@ fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {
     ) {
 
         Image(
-            painter = painterResource("images/logo.png"),
+            painter = painterResource("assets/images/logo.png"),
             contentDescription = "Logo",
             modifier = Modifier
                 .clickable { onPageChange(Screen.MAIN) }
@@ -88,7 +88,7 @@ fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {
 
                 Row {
                     Image(
-                        painter = painterResource("images/jogo.png"),
+                        painter = painterResource("assets/images/jogo.png"),
                         contentDescription = "Minecraft Icon",
                         modifier = Modifier.size(20.dp)
                     )
@@ -104,7 +104,7 @@ fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {
             ) {
                 Row {
                     Image(
-                        painter = painterResource("images/spigot.png"),
+                        painter = painterResource("assets/images/spigot.png"),
                         contentDescription = "Minecraft Icon",
                         modifier = Modifier.size(20.dp)
                     )
@@ -120,7 +120,7 @@ fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {
             ) {
                 Row {
                     Image(
-                        painter = painterResource("images/db.png"),
+                        painter = painterResource("assets/images/db.png"),
                         contentDescription = "Minecraft Icon",
                         modifier = Modifier.size(20.dp)
                     )
@@ -131,7 +131,7 @@ fun header(modifier: Modifier = Modifier, onPageChange: (Screen) -> Unit) {
 
         }
         Image(
-            painter = painterResource("images/foto.png"),
+            painter = painterResource("assets/images/foto.png"),
             contentDescription = "Sua foto"
         )
     }
@@ -168,7 +168,7 @@ fun footer(modifier: Modifier = Modifier) {
                 onClick = { /* ação de navegação */ },
             ) {
                 Image(
-                    painter = painterResource("images/jogo.png"),
+                    painter = painterResource("assets/images/jogo.png"),
                     contentDescription = "Minecraft Icon",
                     modifier = Modifier.size(20.dp)
                 )            }

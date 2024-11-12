@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import components.*
@@ -76,8 +77,9 @@ fun App() {
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication,
-        state = rememberWindowState(width = 1372.dp, height = 727.dp),
-        icon = painterResource("images/logo.png")
+        state = rememberWindowState(width = 1372.dp, height = 727.dp, position = WindowPosition.Aligned(Alignment.Center)),
+        icon = painterResource("assets/images/logo.png"),
+        title = "XG7Launcher"
         ) {
         App()
     }
