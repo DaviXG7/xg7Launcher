@@ -46,9 +46,9 @@ fun MinecraftBootProfile(modifier: Modifier = Modifier) {
 
         Text("Selecione o perfil do Minecraft", color = Color.White)
 
-        SelectMenu(Arrays.asList("Perfil 1", "Perfil 2", "Perfil 3"), 0) { selectedOption ->
+        SelectMenu(Arrays.asList("Perfil 1", "Perfil 2", "Perfil 3"), 0, { selectedOption ->
             println("Perfil selecionado: $selectedOption")
-        }
+        },null)
 
         Button(
             onClick = {},
@@ -108,9 +108,9 @@ fun ServerBootProfile(modifier: Modifier = Modifier) {
 
         Text("Selecione o perfil Spigot", color = Color.White)
 
-        SelectMenu(Arrays.asList("Perfil 1", "Perfil 2", "Perfil 3"), 0) { selectedOption ->
+        SelectMenu(Arrays.asList("Perfil 1", "Perfil 2", "Perfil 3"), 0, { selectedOption ->
             println("Perfil selecionado: $selectedOption")
-        }
+        },null)
 
         Button(
             onClick = {},

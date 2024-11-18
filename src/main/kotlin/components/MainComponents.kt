@@ -21,13 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SelectMenu(options: List<String>, selectedOption: Int, onOptionSelected: (String) -> Unit) {
+fun SelectMenu(options: List<String>, selectedOption: Int, onOptionSelected: (String) -> Unit, modifier: Modifier?) {
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(selectedOption) }
 
     Box {
         // Botão para abrir o menu
-        Button(onClick = { expanded = true }) {
+        Button(modifier = modifier?: Modifier, onClick = { expanded = true }) {
             Text(options[selectedText])
         }
 

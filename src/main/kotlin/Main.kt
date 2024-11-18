@@ -20,7 +20,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import components.*
-import controlers.Profile
+import controlers.assets
 
 enum class Screen {
     MAIN, PROFILE_MINECRAFT, PROFILE_SPIGOT
@@ -76,11 +76,12 @@ fun App() {
 
 
 fun main() = application {
+    assets()
     Window(onCloseRequest = ::exitApplication,
         state = rememberWindowState(width = 1372.dp, height = 727.dp, position = WindowPosition.Aligned(Alignment.Center)),
         icon = painterResource("assets/images/logo.png"),
         title = "XG7Launcher"
-        ) {
+    ) {
         App()
     }
 

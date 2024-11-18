@@ -22,48 +22,70 @@ import components.SelectMenu
 import controlers.JavaVersion
 import controlers.Software
 import controlers.Version
+import kotlinx.coroutines.delay
 
 @Composable
 fun downloadWindow(initDownload: suspend ((Float) -> Unit) -> Unit, text: String, onClose: () -> Unit) {
     var progress by remember { mutableStateOf(0f) }
+    var isWindowOpen by remember { mutableStateOf(true) }
 
-    val window = Window(
-        title = "Download",
-        onCloseRequest = {onClose()},
-        state = rememberWindowState(width = 520.dp, height = 300.dp, position = WindowPosition.Aligned(Alignment.Center)),
-        undecorated = true,
-
-
-    ) {
-        LaunchedEffect(Unit) {
-            initDownload { newProgress ->
-                progress = newProgress
-                if (progress == 1f) {
-                    onClose()
+    if (isWindowOpen) {
+        Window(
+            title = "Download",
+            onCloseRequest = {
+                isWindowOpen = false
+                onClose()
+            },
+            state = rememberWindowState(width = 520.dp, height = 300.dp, position = WindowPosition.Aligned(Alignment.Center)),
+            undecorated = true,
+        ) {
+            LaunchedEffect(Unit) {
+                initDownload { newProgress ->
+                    progress = newProgress
+                    if (progress == 1f) {
+                        Thread.sleep(1000)
+                        isWindowOpen = false
+                        onClose()
+                    }
                 }
             }
-        }
 
-        MaterialTheme {
-            Box(modifier = Modifier.fillMaxSize().background(Color(0, 12, 55))) {
-                Column(modifier = Modifier.fillMaxSize().padding(16.dp)
-                    .align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center) {
+            MaterialTheme {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0, 12, 55))
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            painter = painterResource("assets/images/logo.png"),
+                            contentDescription = "Download",
+                            modifier = Modifier.size(75.dp)
+                        )
 
-                    Image(
-                        painter = painterResource("assets/images/logo.png"),
-                        contentDescription = "Download",
-                        modifier = Modifier.size(75.dp)
-                    )
+                        LinearProgressIndicator(
+                            progress = progress,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(10.dp),
+                            color = Color.Cyan
+                        )
 
-                    LinearProgressIndicator(progress = progress, modifier = Modifier.fillMaxWidth().height(10.dp), color = Color.Cyan)
-
-                    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                        Text(text, color = Color.White)
-                        Text("${(progress * 100).toInt()}% concluído",color = Color.White)
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(text, color = Color.White)
+                            Text("${(progress * 100).toInt()}% concluído", color = Color.White)
+                        }
                     }
-
                 }
             }
         }

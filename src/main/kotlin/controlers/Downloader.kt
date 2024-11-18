@@ -1,6 +1,7 @@
 package controlers
 
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.window.application
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -13,21 +14,22 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URL
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 
-suspend fun downloadJava(version: JavaVersion, onProgress: (Float) -> Unit) {
+suspend fun downloadJava(version: JavaVersion, onProgress: (Float) -> Unit) : File? {
     val url = when (version) {
-        JavaVersion.V8 -> "https://download1529.mediafire.com/5b0vblgfjbsg38PzPy2FpvzPLmg5fl6RU1-6MTtmBrbRrEARJs3O-mov2rTxBRwC6WICNZRW8KzbqmljHrK6D15ctm4jWAeoHQpCERm8uepdahy6OoUlfQQeBTSldem5R9Aa3Ooah3e_83cTw3dVaN5WJxRSPjlB4Z4Rg74fosEk5DE/lp6e1u0x35jw4oa/zulujdk8.zip"
+        JavaVersion.V8 -> "https://download1529.mediafire.com/4wlujryfnt2gbL9wE5xbCrmcQyIQCZqAh2akewm_RTZm9JlZyaqut9eVO8UOWC88eRZg4H3DXhZkn4pF_QkzsMMgiGnwNvMPz12_X9ctLZaWmFCsrYkrxDZyoQ2rivV5Mg0QVDKyHZFFJtrFoc0tq6g0hEMkIKImdLTLzpPPwfQ4oTw/lp6e1u0x35jw4oa/zulujdk8.zip"
         JavaVersion.V11 -> "https://download1326.mediafire.com/73v06vc5q5xgJH3tZ-17mcYfc4V3yZDH3J5xyZFrP5iPPfK9dNWJb2TJsuzt3r0iPToR8f8VxMXQYLnNjoAERW3BpWfAlND3x4VncsmOFHZiPyemvgTqOWJ9HbrFBnfuzG6Y1TguU3ZIwtT-c2edhVxL-y0q3X7cSMd4KYmMEW5-ooE/go9bivc3m8440df/zulujdk11.zip"
         JavaVersion.V17 -> "https://download1589.mediafire.com/wpn2sgep8y0gsYS71QlSHKBnOSray0BUuYL0IoBy5pGKNVruj0zu_cLxBVzHg5CLGAGE8EmCk17JHB7vpEENLQ_L-6Zh75Bkjsso8PU_0FWRDuBzLP2y8A6zGvnnHVSYe-hxxTBMJ0RoXHAWm5pcJducHlVo75BN3oqr5ooGpr1B3b8/amelml7v9ch04l8/zulujdk17.zip"
         JavaVersion.V21 -> "https://download1323.mediafire.com/sitrdsjynqygvq5As099Qq4z-B0FZKtuUKufyL9_Uq27Flo2pfRp_cAKlCno82OfwGFHieoo4xl1Kv4IQp4USi0FfMHOcZQvS8TizuL-B42ggqJTYvygg2bt0w-wr5oOwnmssoGxfrxfCBwlV6BmKaFamcg3nhFFm8inseD7DNun64U/azl1dxtlyt56asc/zulujdk21.zip"
     }
-    download(url, getFolder("assets\\jdks").path + "\\jdk${version.name}.zip", onProgress)
+    return download(url, getFolder("assets\\jdks").path + "\\jdk${version.versionName}.zip", onProgress)
 }
 
-suspend fun downloadSpigot(profileName: String, software: Software, version: Version, onProgress: (Float) -> Unit) {
+suspend fun downloadSpigot(software: Software, version: Version, onProgress: (Float) -> Unit) : File? {
 
     val url = when (software) {
         Software.PAPER -> {
@@ -44,41 +46,47 @@ suspend fun downloadSpigot(profileName: String, software: Software, version: Ver
         }
     }
 
-    download(url, getFolder("profiles\\$profileName").path + "\\server.jar", onProgress)
-
-
-
+    return download(url, getFolder("assets\\servers").path + "\\${software.name.lowercase(Locale.getDefault())}${version.versionName}.jar", onProgress)
 }
 
-suspend fun download(urlTarget: String, downloadPath: String, onProgress: (Float) -> Unit) {
-    withContext(Dispatchers.IO) {
-        val url = URI(urlTarget).toURL()
-        val file = File(downloadPath)
+suspend fun download(urlTarget: String, downloadPath: String, onProgress: (Float) -> Unit) : File? {
+    return try {
+        withContext(Dispatchers.IO) {
+            val url = URI(urlTarget).toURL()
+            val file = File(downloadPath)
 
-        val connection = url.openConnection()
-        val totalSize = connection.contentLengthLong
-        val inputStream: InputStream = connection.getInputStream()
-        val fos = FileOutputStream(file)
+            val connection = url.openConnection()
+            val totalSize = connection.contentLengthLong
+            val inputStream: InputStream = connection.getInputStream()
+            val fos = FileOutputStream(file)
 
-        var bytesDownloaded: Long = 0
-        val buffer = ByteArray(8 * 1024)
-        var bytesRead: Int
+            var bytesDownloaded: Long = 0
+            val buffer = ByteArray(8 * 1024)
+            var bytesRead: Int
 
-        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-            fos.write(buffer, 0, bytesRead)
-            bytesDownloaded += bytesRead
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                fos.write(buffer, 0, bytesRead)
+                bytesDownloaded += bytesRead
 
-            val progress = bytesDownloaded / totalSize.toFloat()
-            onProgress(progress)
+                val progress = bytesDownloaded / totalSize.toFloat()
+                onProgress(progress)
+            }
+
+            inputStream.close()
+            fos.close()
+
+            // Se o arquivo for ZIP, faz o unzip e apaga o arquivo original
+            if (file.extension == "zip") {
+                unzip(file)
+                file.delete()
+            }
+
+            file // Retorna o arquivo se tudo ocorrer bem
         }
-
-        inputStream.close()
-        fos.close()
-
-        if (file.extension == "zip") {
-            unzip(file)
-            file.delete()
-        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        println("Erro ao fazer o download. Tente novamente.")
+        null
     }
 }
 
@@ -123,7 +131,7 @@ fun unzip(zipFile: File): File {
 fun main() = application {
     downloadWindow(
         initDownload = { progressCallback ->
-            downloadSpigot("coisado1.20.1", Software.PAPER, Version.V1_21_1) { progressCallback(it) }
+            downloadSpigot(Software.PAPER, Version.V1_21_1) { progressCallback(it) }
         },
         text = "Baixando PaperSpigot1.8.8"
         ,

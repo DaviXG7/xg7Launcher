@@ -1,22 +1,76 @@
 package controlers
 
 import Screen
+import androidx.compose.runtime.Composable
+import com.google.gson.GsonBuilder
+import downloadWindow
+import java.util.*
 
-val profileList = listOf<Profile>()
+val profileList = mutableListOf<Profile>()
 
-fun createProfile(type: Screen, name: String, image: String, pathFiles: String, javaVersion: JavaVersion, software: Software): Profile? {
+@Composable
+fun createProfile(type: Screen, name: String, image: String, javaVersion: JavaVersion, version: Version, software: Software): Profile? {
 
     return when (type) {
-        Screen.PROFILE_MINECRAFT -> createServerProfile(name, image, pathFiles, javaVersion, software)
-        Screen.PROFILE_SPIGOT -> createServerProfile(name, image, pathFiles, javaVersion, software)
+        Screen.PROFILE_MINECRAFT -> createServerProfile(name, image, javaVersion, software,version)
+        Screen.PROFILE_SPIGOT -> createServerProfile(name, image, javaVersion, software,version)
         Screen.MAIN -> return null
     }
 }
 
-private fun createServerProfile(name: String, image: String, pathFiles: String, javaVersion: JavaVersion, software: Software): ServerProfile {
+@Composable
+private fun createServerProfile(name: String, image: String, javaVersion: JavaVersion, software: Software, version: Version): ServerProfile {
 
-    val profile = ServerProfile(name,image,"profiles/$name",software,javaVersion);
+    val profile = ServerProfile(name,image, version, software, javaVersion,"-jar server.jar", "")
 
-    return ServerProfile("","","",Software.SPIGOT,JavaVersion.V17);
+    val gson = GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create()
+    val json = gson.toJson(profile)
 
+    getFolder("profiles")
+
+    writeContent(json,"profiles\\$name.json").toString()
+
+    getFolder("spigot")
+
+    if (!exists("assets\\jdks\\jdk${javaVersion.versionName}")) {
+        downloadWindow(
+            initDownload = { progressCallback ->
+                downloadJava(javaVersion) { progressCallback(it) }
+            },
+            text = "Baixando Java ${javaVersion.versionName}",
+            {
+                println("Download finalizado")
+            }
+        )
+    }
+    if (!exists("assets\\servers\\${software.name.lowercase(Locale.getDefault())}${version.versionName}.jar")) {
+        downloadWindow(
+            initDownload = { progressCallback ->
+                downloadSpigot(software,version) { progressCallback(it) }
+            },
+            text = "Baixando ${software.name} ${version.name}",
+            {
+                println("Download finalizado")
+
+                copyFile(jarFolder.path + "assets\\servers\\${software.name.lowercase(Locale.getDefault())}${version.versionName}.jar", "spigot\\$name\\server.jar")
+                profileList.add(profile)
+            }
+        )
+        return profile
+    }
+
+
+    val serverFile = getFile("assets/")
+
+    copyFile(jarFolder.path + "assets\\servers\\${software.name.lowercase(Locale.getDefault())}${version.versionName}.jar", "spigot\\$name\\server.jar")
+
+    profileList.add(profile)
+
+    return profile
+
+}
+
+@Composable
+fun coisa() {
+    createServerProfile("test", "test", JavaVersion.V8, Software.PAPER, Version.V1_8_8)
 }
