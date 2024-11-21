@@ -48,25 +48,26 @@ private fun createServerProfile(name: String, image: String, javaVersion: JavaVe
             initDownload = { progressCallback ->
                 downloadSpigot(software,version) { progressCallback(it) }
             },
-            text = "Baixando ${software.name} ${version.name}",
+            text = "Baixando ${software.name} ${version.versionName}",
             {
                 println("Download finalizado")
 
-                copyFile(jarFolder.path + "assets\\servers\\${software.name.lowercase(Locale.getDefault())}${version.versionName}.jar", "spigot\\$name\\server.jar")
+                copyFile(jarFolder.path + "\\assets\\servers\\${software.name.lowercase(Locale.getDefault())}${version.versionName}.jar", "spigot\\$name\\server.jar")
                 profileList.add(profile)
             }
         )
         return profile
     }
 
-
-    val serverFile = getFile("assets/")
-
-    copyFile(jarFolder.path + "assets\\servers\\${software.name.lowercase(Locale.getDefault())}${version.versionName}.jar", "spigot\\$name\\server.jar")
+    copyFile(jarFolder.path + "\\assets\\servers\\${software.name.lowercase(Locale.getDefault())}${version.versionName}.jar", "spigot\\$name\\server.jar")
 
     profileList.add(profile)
 
     return profile
+
+}
+
+fun runProfile(profile: Profile) {
 
 }
 

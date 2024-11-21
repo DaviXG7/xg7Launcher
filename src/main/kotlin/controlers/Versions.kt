@@ -1,15 +1,20 @@
 package controlers
 
 enum class Software {
-    PAPER,
     SPIGOT,
+    PAPER,
 }
 
 enum class JavaVersion(val versionName: String) {
     V8("8"),
     V11("11"),
     V17("17"),
-    V21("21")
+    V21("21");
+    companion object {
+        fun getByName(name: String): JavaVersion {
+            return entries.first { it.versionName == name }
+        }
+    }
 }
 
 enum class Version(val versionName: String) {
@@ -28,5 +33,11 @@ enum class Version(val versionName: String) {
     V1_9_4("1.9.4"),
     V1_8_8("1.8.8"),
     V1_7_10("1.7.10");
+
+    companion object {
+        fun getByName(name: String): Version {
+            return entries.first { it.versionName == name }
+        }
+    }
 
 }

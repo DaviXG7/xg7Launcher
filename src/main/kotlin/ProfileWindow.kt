@@ -1,10 +1,10 @@
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,9 +27,9 @@ import javax.imageio.ImageIO
 data class ProfileState(
     var name: String = "",
     var image: String = "assets/images/logo.png",
-    var version: Version? = null,
-    var javaVersion: JavaVersion? = null,
-    var software: Software? = null
+    var version: Version = Version.entries.first(),
+    var javaVersion: JavaVersion = JavaVersion.entries.first(),
+    var software: Software = Software.entries.first()
 )
 
 
@@ -41,6 +41,8 @@ fun show(screen: Screen, onClose: () -> Unit) {
     var profileState by remember { mutableStateOf(ProfileState()) }
     var imageBitmap by remember { mutableStateOf(ImageIO.read(getFile("assets\\images\\logo.png")).toPainter()) }
     var isWindowOpen by remember { mutableStateOf(true) }
+    var error by remember {(mutableStateOf(""))}
+    var ready by remember { mutableStateOf(false) }
 
     if (isWindowOpen) {
         Window(
@@ -74,7 +76,7 @@ fun show(screen: Screen, onClose: () -> Unit) {
                             Button(onClick = {
                                 getFolder("imageUploads")
                                 val fileName = openFileChooser()
-                                profileState = profileState.copy(image = fileName ?: "Erro")
+                                profileState = profileState.copy(image = fileName)
                                 imageBitmap = ImageIO.read(getFile("imageUploads\\$fileName")).toPainter()
                             }) {
                                 Text(if (profileState.image == "assets/images/logo.png") "Selecionar imagem" else profileState.image)
@@ -84,39 +86,60 @@ fun show(screen: Screen, onClose: () -> Unit) {
                             onValueChange = { profileState = profileState.copy(name = it) },
                             value = profileState.name,
                             label = { Text("Nome:") },
-                            modifier = Modifier.background(Color.White)
+                            modifier = Modifier.fillMaxWidth(0.5f)
+                                .background(Color.White)
                         )
 
                         if (screen == Screen.PROFILE_SPIGOT) {
-                            SelectMenu(
-                                listOf(Software.PAPER.name, Software.SPIGOT.name),
-                                0,
-                                onOptionSelected = { selectedOp ->
-                                    profileState.software = Software.valueOf(selectedOp)
-                                },
-                                Modifier.width(135.dp)
-                            )
+                            Column(
+                                modifier = Modifier.fillMaxWidth(0.5f)
+                            ) {
+                                Text(text = "Software do servidor", color = Color.White)
+                                SelectMenu(
+                                    listOf(Software.SPIGOT.name, Software.PAPER.name),
+                                    0,
+                                    onOptionSelected = { selectedOp ->
+                                        profileState.software = Software.valueOf(selectedOp)
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    )
+                            }
                         }
 
-                        SelectMenu(
-                            Version.entries.map { it.versionName }.toList(),
-                            0,
-                            onOptionSelected = { selectedOp ->
-                                profileState.version = Version.valueOf(selectedOp)
-                            },
-                            Modifier.width(135.dp)
-                        )
-                        SelectMenu(
-                            JavaVersion.entries.map { it.versionName }.toList(),
-                            0,
-                            onOptionSelected = { selectedOp ->
-                                profileState.javaVersion = JavaVersion.valueOf(selectedOp)
-                            },
-                            Modifier.width(135.dp)
-                        )
+                        Column(
+                            modifier = Modifier.fillMaxWidth(0.5f)
+                        ) {
+                            Text(text = "Versão do servidor", color = Color.White)
+                            SelectMenu(
+                                modifier = Modifier.fillMaxWidth(),
+                                options = Version.entries.map { it.versionName }.toList(),
+                                selectedOption = 0,
+                                onOptionSelected = { selectedOp ->
+                                    profileState.version = Version.getByName(selectedOp)
+                                },
+                            )
+                        }
+                        Column(
+                            modifier = Modifier.fillMaxWidth(0.5f)
+                        ) {
+                            Text(text = "Versão do Java", color = Color.White)
+                            SelectMenu(
+                                modifier = Modifier.fillMaxWidth(),
+                                options = JavaVersion.entries.map { it.versionName }.toList(),
+                                selectedOption = 0,
+                                onOptionSelected = { selectedOp ->
+                                    profileState.javaVersion = JavaVersion.getByName(selectedOp)
+                                },
+                                )
+                        }
 
-                        Row {
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(0.5f),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
                             Button(
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
                                 onClick = {
                                     isWindowOpen = false
                                     onClose()
@@ -124,26 +147,48 @@ fun show(screen: Screen, onClose: () -> Unit) {
                             ) {
                                 Text(text = "Cancelar")
                             }
-                            Button(onClick = {}) {
+                            Button(
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green),
+                                onClick = {
+                                    if (profileState.name.isBlank()) {
+                                        error = "Insira um nome"
+                                        return@Button
+                                    }
+
+                                    ready = true
+                                    isWindowOpen = false
+                                    onClose()
+                                }
+                            ) {
                                 Text(text = "Criar")
                             }
+                        }
+                        if (error.isNotBlank()) {
+                            Text(text = error, color = Color.Red)
                         }
                     }
                 }
             }
         }
     }
+    if (ready) {
+        createProfile(screen, profileState.name, profileState.image, profileState.javaVersion, profileState.version, profileState.software)
+    }
 }
 
 
-fun openFileChooser(): String? {
+fun openFileChooser(): String {
     val dialog = FileDialog(Frame(), "Escolha um arquivo", FileDialog.LOAD)
     dialog.isVisible = true
-    val path = dialog.files.firstOrNull()?.path
-    val fileName = path?.split("\\")?.last()
+    if (dialog.files.isEmpty()) {
+        copyFile(jarFolder.path + "\\assets\\images\\logo.png", "imageUploads\\logo.png")
+        return "logo.png"
+    }
+    val path = dialog.files.first().path
+    val fileName = path.split("\\").last()
 
 
-    copyFile(path?: "assets\\images\\logo.png", "imageUploads\\$fileName")
+    copyFile(path, "imageUploads\\$fileName")
 
     return fileName
 }

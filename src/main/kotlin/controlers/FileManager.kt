@@ -38,7 +38,11 @@ fun getFile(path: String): File {
 }
 
 fun copyFile(path: String, newPath: String) {
-    Files.copy(File(path).toPath(), File(jarFolder, newPath).toPath(), StandardCopyOption.REPLACE_EXISTING)
+
+    val newFile = File(jarFolder, newPath)
+    newFile.parentFile.mkdirs()
+
+    Files.copy(File(path).toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
 }
 
 fun getResource(resourcePath: String): InputStream {
